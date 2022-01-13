@@ -1,0 +1,11 @@
+---
+dd_run: false
+dd_list: exclude
+dd_input: /dev/null
+dd_output: []
+dd_args_default:
+  iflag: fullblock
+  oflag: direct
+  conv: noerror,notrunc
+  bs: 16M
+dd_args: []

@@ -1,0 +1,7 @@
+---
+- name: DD task block
+  block:
+    - name: Detect disks
+    - name: DD disks including
+    - name: DD disks excluding
+  when: dd_run

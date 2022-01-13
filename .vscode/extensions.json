@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "redhat.ansible",
+        "samuelcolvin.jinjahtml",
+        "editorconfig.editorconfig",
+        "redhat.vscode-yaml"
+    ]
+}
