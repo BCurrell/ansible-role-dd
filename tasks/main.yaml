@@ -1,7 +1,11 @@
 ---
 - name: DD task block
   block:
-    - name: Detect disks
+    # Ansible fact: ansible_devices
+
     - name: DD disks including
+      when: "{{ dd_list }} == include"
+
     - name: DD disks excluding
+      when: "{{ dd_list }} == exclude"
   when: dd_run
