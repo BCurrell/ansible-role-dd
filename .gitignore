@@ -16,5 +16,8 @@
 !defaults/
 !defaults/*.yaml
 
+!filter_plugins/
+!filter_plugins/*.py
+
 !tasks/
 !tasks/*.yaml
