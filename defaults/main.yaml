@@ -2,7 +2,7 @@
 dd_list: []
 default_dd_input: /dev/null
 default_dd_output: []
-default_dd_exclude: true
+default_dd_type: exclude
 default_dd_args:
   iflag: fullblock
   oflag: direct

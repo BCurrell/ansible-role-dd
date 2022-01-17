@@ -3,5 +3,21 @@
   block:
     - name: Debug
       debug:
-        msg: "{{ item }}"
-  with_items: "{{ dd_list }}"
+        msg: "{{ dd_item }}"
+
+    - name: Run dd including
+      when: "{{ dd_item.type | default(default_dd_type) }} == include"
+      with_items: "{{ ansible_device_links | including(dd_item.output) | paths }}"
+
+    - name: Run dd excluding
+      when: "{{ dd_item.type | default(default_dd_type) }} == exclude"
+      with_items: "{{ ansible_device_links | excluding(dd_item.output) | paths }}"
+
+    - name: Run dd raw
+      when: "{{ dd_item.type | default(default_dd_type) }} == raw"
+      loop: "{{ dd_item.output }}"
+
+  loop: "{{ dd_list }}"
+  loop_control:
+    item_var: dd_item
+    label: "{{ dd_item.input }}"
