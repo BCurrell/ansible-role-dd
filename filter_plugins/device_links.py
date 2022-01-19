@@ -20,40 +20,55 @@ def reformat(device_links):
     """
     result = {}
 
-    for link, devices in device_links.items():
+    for link_type, devices in device_links.items():
         for device, links in devices.items():
             if device not in result:
                 result[device] = {}
-            if link not in result[device]:
-                result[device][link] = []
+            if link_type not in result[device]:
+                result[device][link_type] = []
 
-            result[device][link] += links
+            result[device][link_type] += links
 
     return result
 
 
-def search(device_links, val, do_reformat=False):
-    if do_reformat:
-        device_links = reformat(device_links)
-    
-    if val in device_links:
-        return val
+def search(device_links, link):
+    if link in device_links:
+        return link
 
-    for device, links in device_links.items():
-        for link in links:
-            if val in link:
-                return val
+    for device, link_types in device_links.items():
+        for link_type in link_types:
+            if link in link_type:
+                return device
 
     return None
 
 
-def including(device_links, input):
-    pass
+def strip_paths(links):
+    for link in links:
+        yield link.split("/")[-1]
 
 
-def excluding(device_links, input):
-    pass
+# TODO: This is horrible, there must be a better way
+def including(device_links, links):
+    for link in links:
+        device = search(device_links, link)
+        if device is not None:
+            yield f"/dev/{device}"
 
+
+# TODO: This is horrible, there must be a better way
+def excluding(device_links, links):
+    found = []
+
+    for link in links:
+        device = search(device_links, link)
+        if device is not None:
+            found += device
+
+    for device in device_links:
+        if device not in found:
+            yield f"/dev/{device}"
 
 class FilterModule(object):
     def filters(self):
