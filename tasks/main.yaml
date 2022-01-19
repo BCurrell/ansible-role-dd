@@ -7,15 +7,18 @@
 
     - name: Run dd including
       when: "{{ dd_item.type | default(default_dd_type) }} == include"
-      loop: "{{ ansible_device_links | including(dd_item.output) | paths }}"
+      loop: "{{ ansible_device_links | reformat | including(dd_item.output | default(default_dd_output)) }}"
+      command: "dd if={{ dd_item.input | default(default_dd_input) }} of={{ item }} {{ dd_item.args | default(default_dd_args) | args }}"
 
     - name: Run dd excluding
       when: "{{ dd_item.type | default(default_dd_type) }} == exclude"
-      loop: "{{ ansible_device_links | excluding(dd_item.output) | paths }}"
+      loop: "{{ ansible_device_links | reformat | excluding(dd_item.output | default(default_dd_output)) }}"
+      command: "dd if={{ dd_item.input | default(default_dd_input) }} of={{ item }} {{ dd_item.args | default(default_dd_args) | args }}"
 
     - name: Run dd raw
       when: "{{ dd_item.type | default(default_dd_type) }} == raw"
       loop: "{{ dd_item.output }}"
+      command: "dd if={{ dd_item.input | default(default_dd_input) }} of={{ item }} {{ dd_item.args | default(default_dd_args) | args }}"
 
   loop: "{{ dd_list }}"
   loop_control:
